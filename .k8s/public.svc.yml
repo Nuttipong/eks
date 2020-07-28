@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+  labels:
+    app: nginx
+    role: blue
+    env: prod
+spec:
+  selector:
+    app: nginx
+    role: blue
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP

@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  backend-foo
+  labels:
+    app:  backend-foo
+spec:
+  selector:
+    matchLabels:
+      app:  backend-foo
+
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  backend-foo
+    spec:
+      # initContainers:
+        # Init containers are exactly like regular containers, except:
+          # - Init containers always run to completion.
+          # - Each init container must complete successfully before the next one starts.
+      containers:
+      - name:  backend-foo
+        image:  991654915716.dkr.ecr.eu-central-1.amazonaws.com/demo:be-foo-v1.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5001
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 1
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5001
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        ports:
+        - containerPort:  5001
+      securityContext: # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+        runAsUser: 1000
+        runAsNonRoot: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-foo-svc
+spec:
+  selector:
+    app: backend-foo
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 5001
+    protocol: TCP

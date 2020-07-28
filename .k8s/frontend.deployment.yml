@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  web-app
+  labels:
+    app:  web-app
+    tier: frontend
+spec:
+  selector:
+    matchLabels:
+      tier: frontend
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name:  web-app
+        image:  991654915716.dkr.ecr.eu-central-1.amazonaws.com/demo:fe3.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 4001
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 1
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 4001
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        ports:
+        - containerPort:  4001
+      securityContext: # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+        runAsUser: 1000
+        runAsNonRoot: true

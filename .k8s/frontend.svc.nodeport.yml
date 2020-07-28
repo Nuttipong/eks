@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-nodeport-svc
+spec:
+  selector:
+    app: web-app
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 4001
+    nodePort: 31000

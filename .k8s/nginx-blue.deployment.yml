@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  nginx-blue
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+      role: blue
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx
+        role: blue
+    spec:
+      containers:
+      - name:  nginx-blue
+        image:  
+        ports:
+        - containerPort:  80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+        resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blue-test-svc
+  labels:
+    app: nginx
+    role: blue
+    env: temp
+spec:
+  selector:
+    app: nginx
+    role: blue
+  type: ClusterIP
+  ports:
+  - port: 9000
+    targetPort: 80
+    protocol: TCP

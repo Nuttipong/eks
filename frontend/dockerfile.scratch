@@ -1,0 +1,14 @@
+FROM golang:alpine as builder
+RUN mkdir /build 
+ADD . /build/
+WORKDIR /build 
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main .
+FROM scratch
+COPY --from=builder /build/main /app/
+WORKDIR /app
+CMD ["./main"]
+
+# FROM scratch tells Docker to start over like we saw in the previous multi-stage example, 
+# but this time using the 0KB scratch image. The first stage looks similar to the previous, 
+# but this time we use some compile-time parameters in the build stage to instruct the go compiler 
+# to statically link the runtime libraries into the binary itself:
