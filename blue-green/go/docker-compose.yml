@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+
+  blue:
+    container_name: go-app-blue
+    image: 991654915716.dkr.ecr.eu-central-1.amazonaws.com/demo:go-webapp-blue-v1.0
+    build:
+      context: ./blue
+      dockerfile: blue.dockerfile
+    ports:
+     - 9001:9001
+    
+  green:
+    container_name: go-app-green
+    image: 991654915716.dkr.ecr.eu-central-1.amazonaws.com/demo:go-webapp-green-v1.0
+    build:
+      context: ./green
+      dockerfile: green.dockerfile
+    ports:
+     - 9002:9002

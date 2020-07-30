@@ -4,7 +4,7 @@ metadata:
   name: web-app-nodeport-svc
 spec:
   selector:
-    app: web-app
+    tier: frontend
   type: NodePort
   ports:
   - port: 80

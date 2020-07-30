@@ -1,9 +1,8 @@
 FROM golang:alpine
+RUN apk update && apk add --no-cache curl
 RUN mkdir /app
 ADD . /app/
 WORKDIR /app
 RUN go build -o main .
 EXPOSE 4001
-RUN adduser -S -D -H -h /app appuser
-USER appuser
 CMD ["./main"]

@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels:
       tier: frontend
-  replicas: 2
+  replicas: 4
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name:  web-app
-        image:  991654915716.dkr.ecr.eu-central-1.amazonaws.com/demo:fe3.0
+        image:  991654915716.dkr.ecr.eu-central-1.amazonaws.com/demo:fe2.0
         resources:
           requests:
             cpu: 100m

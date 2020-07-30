@@ -4,7 +4,7 @@ metadata:
   name: web-app-clusterip-svc
 spec:
   selector:
-    app: web-app
+    tier: frontend
   type: ClusterIP
   ports:
   - name: http

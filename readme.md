@@ -73,6 +73,7 @@ k exec web-app-5f76887d87-njfwb -- curl -s http://10.251.10.45:8080
 OR
 k run -it --rm curl --restart=Never --image=991654915716.dkr.ecr.eu-central-1.amazonaws.com/demo:1.0 -- 172.20.108.108:8080
 k run -it --rm curl --restart=Never --image=991654915716.dkr.ecr.eu-central-1.amazonaws.com/demo:1.0 -- web-app:8080
+k describe rs nginx-blue-86d5c7b876
 
 // Service
 k expose deployment web-app --port 8080 --target-port 8080

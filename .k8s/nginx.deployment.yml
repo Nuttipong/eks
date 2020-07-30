@@ -13,6 +13,10 @@ spec:
       labels:
         app: nginx
     spec:
+      securityContext:
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
       containers:
       - name: nginx
         image: nginx:alpine
